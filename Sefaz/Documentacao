@@ -6,7 +6,7 @@ Para que consigar fazer o monitoramento em varios estados o seu certificado A1 t
 #
 Certificado tem que esatar no Zabbix como .key e .pfx. e colocar permissão "chmod"
 #
-            **Consumidor final MG **
+            **Consumidor final MG**
 Sobre o monitoramento Consumidor final esta configurando somente MG.
 #
 
