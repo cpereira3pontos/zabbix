@@ -4,9 +4,25 @@ Para fazer o monitoramento vai precisar do certificado digital A1 da sua empresa
 #
 Para que consigar fazer o monitoramento em varios estados o seu certificado A1 ter permissão de emissão de nota fiscal no estado que esta tendo ter monitoramento.
 #
-Certificado tem que esatar no Zabbix como .key e .pfx. e colocar permissão "chmod"
+Para fazer a converter o arquivos.
+	openssl pkcs12 -in certificado.pfx -clcerts -nokeys -out certificado.pem
+	openssl pkcs12 -in certificado.pfx -nodes -out certificado.key
+Certificado tem que esatar no Zabbix como .key e .pem. e colocar permissão "chmod"
 #
+O certificado tem que ficar no diretorio /usr/share/zabbix/ssl/keys
+					 /etc/ssl/certs
+#
+Colocar o caminho do que esta o certificado no zabbix-server.conf
+------SSLCertLocation=/etc/ssl/certs
+Depois de colocar este caminho acima no zabbix-server.conf
+Start- zabbix-server
+##
+Vamos abrir o Zabbix e configruas!
+Menu -> Configuraçẽos -> Hosts -> Web Check -> Sefaz "na coluna WEB" -> MG -> Autenticação - Colocar o nome do seu certificao .pem e .key e Senha dele "Selecionar o campo Verificação de SSL do host"
+
+
             **Consumidor final MG**
 Sobre o monitoramento Consumidor final esta configurando somente MG.
+Pegando as configurações da Nfe funciona certinho o consumidor final.
 #
 

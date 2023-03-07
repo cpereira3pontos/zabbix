@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-    <version>5.0</version>
-    <date>2022-10-20T13:58:25Z</date>
+    <version>6.0</version>
+    <date>2023-02-03T19:19:58Z</date>
     <groups>
         <group>
-            <name>Templates/UPS</name>
+            <uuid>957bd9f40c564f9dbff348e1db6cf21d</uuid>
+            <name>Nobreaks</name>
         </group>
     </groups>
     <templates>
         <template>
+            <uuid>f19d5d2e5e42453d808d2683706c9320</uuid>
             <template>UPS RFC 1628 SNMP</template>
             <name>UPS RFC 1628 SNMP</name>
             <templates>
@@ -18,195 +20,230 @@
             </templates>
             <groups>
                 <group>
-                    <name>Templates/UPS</name>
+                    <name>Nobreaks</name>
                 </group>
             </groups>
-            <applications>
-                <application>
-                    <name>UPS battery</name>
-                </application>
-                <application>
-                    <name>UPS bypass</name>
-                </application>
-                <application>
-                    <name>UPS input line</name>
-                </application>
-                <application>
-                    <name>UPS inventory</name>
-                </application>
-                <application>
-                    <name>UPS output line</name>
-                </application>
-            </applications>
             <items>
                 <item>
+                    <uuid>27958e931d764f17817b611f50eb2e1f</uuid>
                     <name>UPS battery current</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.2.6.0</snmp_oid>
                     <key>ups.battery.current</key>
                     <value_type>FLOAT</value_type>
                     <units>A</units>
-                    <applications>
-                        <application>
-                            <name>UPS battery</name>
-                        </application>
-                    </applications>
                     <preprocessing>
                         <step>
                             <type>MULTIPLIER</type>
-                            <params>0.1</params>
+                            <parameters>
+                                <parameter>0.1</parameter>
+                            </parameters>
                         </step>
                     </preprocessing>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS battery</value>
+                        </tag>
+                    </tags>
                 </item>
                 <item>
+                    <uuid>906ebe5a40cc4658a023d068915d8a4e</uuid>
                     <name>UPS estimated charge remaining</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.2.4.0</snmp_oid>
                     <key>ups.battery.estimatedChargeRemaining</key>
                     <units>%</units>
-                    <applications>
-                        <application>
-                            <name>UPS battery</name>
-                        </application>
-                    </applications>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS battery</value>
+                        </tag>
+                    </tags>
                     <triggers>
                         <trigger>
-                            <expression>{last(1m)}&lt;20</expression>
+                            <uuid>b64694d485ae459c9296c76f430b4463</uuid>
+                            <expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&lt;=15</expression>
                             <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
-                            <recovery_expression>{last(1m)}&gt;=25</recovery_expression>
-                            <name>Carga das baterias  20%</name>
+                            <recovery_expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&gt;=15</recovery_expression>
+                            <name>Status Bateria 15%</name>
+                            <priority>DISASTER</priority>
+                        </trigger>
+                        <trigger>
+                            <uuid>3027c4b38e0f4eb9885535de0e82c6ca</uuid>
+                            <expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&lt;=20</expression>
+                            <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+                            <recovery_expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&gt;=20</recovery_expression>
+                            <name>Status Bateria 20%</name>
                             <priority>HIGH</priority>
                         </trigger>
                         <trigger>
-                            <expression>{last(1m)}&lt;30</expression>
+                            <uuid>d674f2bc3fd54c0b851d6875962be8bf</uuid>
+                            <expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&lt;=30</expression>
                             <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
-                            <recovery_expression>{last(1m)}&gt;=30</recovery_expression>
-                            <name>Carga das baterias  30%</name>
+                            <recovery_expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&gt;=30</recovery_expression>
+                            <name>Status Bateria 30%</name>
                             <priority>AVERAGE</priority>
                         </trigger>
                         <trigger>
-                            <expression>{last(1m)}&lt;40</expression>
-                            <name>Carga das baterias 40%</name>
-                            <priority>AVERAGE</priority>
-                        </trigger>
-                        <trigger>
-                            <expression>{last(1m)}&lt;50</expression>
-                            <name>Carga das baterias 50%</name>
-                            <priority>AVERAGE</priority>
-                        </trigger>
-                        <trigger>
-                            <expression>{last(1m)}&lt;60</expression>
-                            <name>Carga das baterias 60%</name>
-                            <priority>AVERAGE</priority>
-                        </trigger>
-                        <trigger>
-                            <expression>{last(1m)}&lt;70</expression>
+                            <uuid>9fcd1e9cb3264af29e90763abed149a6</uuid>
+                            <expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&lt;=40</expression>
                             <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
-                            <recovery_expression>{last(1m)}&gt;=70</recovery_expression>
-                            <name>Carga das baterias 70%</name>
-                            <priority>AVERAGE</priority>
+                            <recovery_expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&gt;=40</recovery_expression>
+                            <name>Status Bateria 40%</name>
+                            <priority>WARNING</priority>
                         </trigger>
                         <trigger>
-                            <expression>{last(1m)}&lt;80</expression>
-                            <name>Carga das baterias 80%</name>
-                            <priority>AVERAGE</priority>
+                            <uuid>e97739c8b210416a8d6f65b9c2425fdf</uuid>
+                            <expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&lt;=50</expression>
+                            <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+                            <recovery_expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&gt;=50</recovery_expression>
+                            <name>Status Bateria 50%</name>
+                            <priority>WARNING</priority>
                         </trigger>
                         <trigger>
-                            <expression>{last(1m)}&lt;90</expression>
-                            <name>Carga das baterias 90%</name>
-                            <priority>AVERAGE</priority>
+                            <uuid>e2c49ef9d19440eea4822c5d463fdfcd</uuid>
+                            <expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&lt;=70</expression>
+                            <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+                            <recovery_expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&gt;=70</recovery_expression>
+                            <name>Status Bateria 70%</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                        <trigger>
+                            <uuid>e5b468eee5e843b99d904ffdfa27cee4</uuid>
+                            <expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&lt;=80</expression>
+                            <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+                            <recovery_expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&gt;=80</recovery_expression>
+                            <name>Status Bateria 80%</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                        <trigger>
+                            <uuid>22613c593c3d4d678e35668f0967e8be</uuid>
+                            <expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&lt;=90</expression>
+                            <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+                            <recovery_expression>avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)&gt;=90</recovery_expression>
+                            <name>Status Bateria 90%</name>
+                            <priority>WARNING</priority>
                         </trigger>
                     </triggers>
                 </item>
                 <item>
+                    <uuid>7bace19e24984dfbae4c3efc7028e2cf</uuid>
                     <name>UPS battery status</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.2.1.0</snmp_oid>
                     <key>ups.battery.status</key>
-                    <applications>
-                        <application>
-                            <name>UPS battery</name>
-                        </application>
-                    </applications>
                     <valuemap>
-                        <name>APC Battery Status</name>
+                        <name>UPS RFC1628 battery status</name>
                     </valuemap>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS battery</value>
+                        </tag>
+                    </tags>
                     <triggers>
                         <trigger>
-                            <expression>{last()}=4</expression>
+                            <uuid>9b5731cd7cb947cabfd3f629431e826d</uuid>
+                            <expression>last(/UPS RFC 1628 SNMP/ups.battery.status)=4</expression>
                             <name>UPS battery status is depleted</name>
-                            <priority>DISASTER</priority>
+                            <priority>WARNING</priority>
                         </trigger>
                         <trigger>
-                            <expression>{last()}=3</expression>
+                            <uuid>0945afe422834ddab9e7154b1ff564fa</uuid>
+                            <expression>last(/UPS RFC 1628 SNMP/ups.battery.status)=3</expression>
                             <name>UPS battery status is low</name>
-                            <priority>HIGH</priority>
+                            <priority>WARNING</priority>
                         </trigger>
                         <trigger>
-                            <expression>{last()}=1</expression>
+                            <uuid>a6f94f08e1a64389a80965854e26d10e</uuid>
+                            <expression>last(/UPS RFC 1628 SNMP/ups.battery.status)=1</expression>
                             <name>UPS battery status is unknown</name>
-                            <priority>AVERAGE</priority>
+                            <priority>WARNING</priority>
                         </trigger>
                     </triggers>
                 </item>
                 <item>
+                    <uuid>197919de33c04a32b24c6931784d31ba</uuid>
                     <name>UPS battery temperature</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.2.7.0</snmp_oid>
                     <key>ups.battery.temperature</key>
                     <units>°C</units>
-                    <applications>
-                        <application>
-                            <name>UPS battery</name>
-                        </application>
-                    </applications>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS battery</value>
+                        </tag>
+                    </tags>
                 </item>
                 <item>
+                    <uuid>7622005749f740e88b83a7956c103317</uuid>
                     <name>UPS battery voltage</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.2.5.0</snmp_oid>
                     <key>ups.battery.voltage</key>
                     <value_type>FLOAT</value_type>
                     <units>V</units>
-                    <applications>
-                        <application>
-                            <name>UPS battery</name>
-                        </application>
-                    </applications>
                     <preprocessing>
                         <step>
                             <type>MULTIPLIER</type>
-                            <params>0.1</params>
+                            <parameters>
+                                <parameter>0.1</parameter>
+                            </parameters>
                         </step>
                     </preprocessing>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS battery</value>
+                        </tag>
+                    </tags>
+                    <triggers>
+                        <trigger>
+                            <uuid>22b67eaf3cdf4d7880817b0c293d835c</uuid>
+                            <expression>abs(last(/UPS RFC 1628 SNMP/ups.battery.voltage))&lt;=1.1</expression>
+                            <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+                            <recovery_expression>abs(last(/UPS RFC 1628 SNMP/ups.battery.voltage))&gt;=1.3</recovery_expression>
+                            <name>Voltagem Bateria</name>
+                            <priority>WARNING</priority>
+                        </trigger>
+                    </triggers>
                 </item>
                 <item>
+                    <uuid>59f8e0751d3143ebad9aea19feec6e83</uuid>
                     <name>UPS bypass frequency</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.5.1.0</snmp_oid>
                     <key>ups.bypass.frequency</key>
                     <units>Hz</units>
-                    <applications>
-                        <application>
-                            <name>UPS bypass</name>
-                        </application>
-                    </applications>
                     <preprocessing>
                         <step>
                             <type>MULTIPLIER</type>
-                            <params>0.1</params>
+                            <parameters>
+                                <parameter>0.1</parameter>
+                            </parameters>
                         </step>
                     </preprocessing>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS bypass</value>
+                        </tag>
+                    </tags>
                     <triggers>
                         <trigger>
-                            <expression>{last(,5m)}&lt;=47</expression>
-                            <name>Frequencia 47Hz</name>
-                            <opdata>Esta em uso da bateria</opdata>
-                            <priority>HIGH</priority>
+                            <uuid>db5dd7815c384dc9aec6b33550b276d9</uuid>
+                            <expression>abs(last(/UPS RFC 1628 SNMP/ups.bypass.frequency))&lt;47</expression>
+                            <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+                            <recovery_expression>abs(last(/UPS RFC 1628 SNMP/ups.bypass.frequency))&gt;47</recovery_expression>
+                            <name>Sem Energia</name>
+                            <priority>DISASTER</priority>
                         </trigger>
                     </triggers>
                 </item>
                 <item>
+                    <uuid>2244fdf6ba6a4beda3601ee6c7aae4a5</uuid>
                     <name>UPS agent software version</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.1.4.0</snmp_oid>
@@ -214,13 +251,15 @@
                     <delay>1d</delay>
                     <trends>0</trends>
                     <value_type>TEXT</value_type>
-                    <applications>
-                        <application>
-                            <name>UPS inventory</name>
-                        </application>
-                    </applications>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS inventory</value>
+                        </tag>
+                    </tags>
                 </item>
                 <item>
+                    <uuid>9cde2d9fc2b349489ac56d88ec4802c8</uuid>
                     <name>UPS attached devices</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.1.6.0</snmp_oid>
@@ -228,13 +267,15 @@
                     <delay>1d</delay>
                     <trends>0</trends>
                     <value_type>TEXT</value_type>
-                    <applications>
-                        <application>
-                            <name>UPS inventory</name>
-                        </application>
-                    </applications>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS inventory</value>
+                        </tag>
+                    </tags>
                 </item>
                 <item>
+                    <uuid>1b9c078e174744aeacd830dc4833d477</uuid>
                     <name>UPS manufacturer</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.1.1.0</snmp_oid>
@@ -243,13 +284,15 @@
                     <trends>0</trends>
                     <value_type>TEXT</value_type>
                     <inventory_link>VENDOR</inventory_link>
-                    <applications>
-                        <application>
-                            <name>UPS inventory</name>
-                        </application>
-                    </applications>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS inventory</value>
+                        </tag>
+                    </tags>
                 </item>
                 <item>
+                    <uuid>2391ac6eb4eb48abb718d9cd4a45c531</uuid>
                     <name>UPS model name</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.1.2.0</snmp_oid>
@@ -258,13 +301,15 @@
                     <trends>0</trends>
                     <value_type>TEXT</value_type>
                     <inventory_link>MODEL</inventory_link>
-                    <applications>
-                        <application>
-                            <name>UPS inventory</name>
-                        </application>
-                    </applications>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS inventory</value>
+                        </tag>
+                    </tags>
                 </item>
                 <item>
+                    <uuid>6270d6eb55334915a6322380faf659da</uuid>
                     <name>UPS name</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.1.5.0</snmp_oid>
@@ -273,91 +318,99 @@
                     <trends>0</trends>
                     <value_type>TEXT</value_type>
                     <inventory_link>HARDWARE</inventory_link>
-                    <applications>
-                        <application>
-                            <name>UPS inventory</name>
-                        </application>
-                    </applications>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS inventory</value>
+                        </tag>
+                    </tags>
                 </item>
                 <item>
+                    <uuid>670f662a20544336866a0da1cda215db</uuid>
                     <name>UPS input line bads</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.3.1.0</snmp_oid>
                     <key>ups.line.input.Bads</key>
-                    <applications>
-                        <application>
-                            <name>UPS input line</name>
-                        </application>
-                    </applications>
-                    <triggers>
-                        <trigger>
-                            <expression>{last()}=&quot;110W&quot;</expression>
-                            <name>Defeito na Entrada</name>
-                            <priority>INFO</priority>
-                        </trigger>
-                    </triggers>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS input line</value>
+                        </tag>
+                    </tags>
                 </item>
                 <item>
+                    <uuid>57acf98d46634185ab5b86b850f3ae71</uuid>
                     <name>UPS output frequency</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.4.2.0</snmp_oid>
                     <key>ups.line.output.frequency</key>
-                    <applications>
-                        <application>
-                            <name>UPS output line</name>
-                        </application>
-                    </applications>
                     <preprocessing>
                         <step>
                             <type>MULTIPLIER</type>
-                            <params>0.1</params>
+                            <parameters>
+                                <parameter>0.1</parameter>
+                            </parameters>
                         </step>
                     </preprocessing>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS output line</value>
+                        </tag>
+                    </tags>
                 </item>
                 <item>
+                    <uuid>8f57a234a1c4497781caf5635f0bab41</uuid>
                     <name>UPS output source</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>.1.3.6.1.2.1.33.1.4.1.0</snmp_oid>
                     <key>ups.line.output.source</key>
-                    <applications>
-                        <application>
-                            <name>UPS output line</name>
-                        </application>
-                    </applications>
                     <valuemap>
                         <name>UPS RFC1628 output source</name>
                     </valuemap>
+                    <tags>
+                        <tag>
+                            <tag>Application</tag>
+                            <value>UPS output line</value>
+                        </tag>
+                    </tags>
                     <triggers>
                         <trigger>
-                            <expression>{last()}=6</expression>
+                            <uuid>09429fbf291a4c759e49d708bded7223</uuid>
+                            <expression>last(/UPS RFC 1628 SNMP/ups.line.output.source)=6</expression>
                             <name>UPS output source is booster</name>
-                            <priority>INFO</priority>
+                            <priority>WARNING</priority>
                         </trigger>
                         <trigger>
-                            <expression>{last()}=4</expression>
+                            <uuid>3bf271d27c5a4e4a9a305fb5b508c15a</uuid>
+                            <expression>last(/UPS RFC 1628 SNMP/ups.line.output.source)=4</expression>
                             <name>UPS output source is bypass</name>
-                            <priority>AVERAGE</priority>
+                            <priority>WARNING</priority>
                         </trigger>
                         <trigger>
-                            <expression>{last()}=2</expression>
+                            <uuid>eb1fd29aa38d4961a994abc1926e306a</uuid>
+                            <expression>last(/UPS RFC 1628 SNMP/ups.line.output.source)=2</expression>
                             <name>UPS output source is none</name>
-                            <priority>AVERAGE</priority>
+                            <priority>WARNING</priority>
                         </trigger>
                         <trigger>
-                            <expression>{last()}=1</expression>
+                            <uuid>94c5198bf9914c97a18353b53ab3f3e0</uuid>
+                            <expression>last(/UPS RFC 1628 SNMP/ups.line.output.source)=1</expression>
                             <name>UPS output source is other</name>
-                            <priority>AVERAGE</priority>
+                            <priority>WARNING</priority>
                         </trigger>
                         <trigger>
-                            <expression>{last()}=7</expression>
+                            <uuid>0167ae17bb98474686d3abc3708ed796</uuid>
+                            <expression>last(/UPS RFC 1628 SNMP/ups.line.output.source)=7</expression>
                             <name>UPS output source is reducer</name>
-                            <priority>INFO</priority>
+                            <priority>WARNING</priority>
                         </trigger>
                     </triggers>
                 </item>
             </items>
             <discovery_rules>
                 <discovery_rule>
+                    <uuid>7d8d53e198e845e3b8d341d9388de5f4</uuid>
                     <name>Bypass</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>discovery[{#UPSBYPASSVOLTAGE},.1.3.6.1.2.1.33.1.5.3.1.2,{#UPSBYPASSCURRENT},.1.3.6.1.2.1.33.1.5.3.1.3,{#UPSBYPASSPOWER},.1.3.6.1.2.1.33.1.5.3.1.4]</snmp_oid>
@@ -365,50 +418,59 @@
                     <delay>1h</delay>
                     <item_prototypes>
                         <item_prototype>
+                            <uuid>f4c3a05cc6a9408e926e216d3bf014fb</uuid>
                             <name>UPS bypass current {#SNMPINDEX}</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>.1.3.6.1.2.1.33.1.5.3.1.3.{#SNMPINDEX}</snmp_oid>
                             <key>ups.bypass.current[{#SNMPINDEX}]</key>
                             <units>A</units>
-                            <applications>
-                                <application>
-                                    <name>UPS bypass</name>
-                                </application>
-                            </applications>
                             <preprocessing>
                                 <step>
                                     <type>MULTIPLIER</type>
-                                    <params>0.1</params>
+                                    <parameters>
+                                        <parameter>0.1</parameter>
+                                    </parameters>
                                 </step>
                             </preprocessing>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UPS bypass</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
+                            <uuid>8e15b96c8ec24061861e686b7404c060</uuid>
                             <name>UPS bypass power {#SNMPINDEX}</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>.1.3.6.1.2.1.33.1.5.3.1.4.{#SNMPINDEX}</snmp_oid>
                             <key>ups.bypass.power[{#SNMPINDEX}]</key>
                             <units>W</units>
-                            <applications>
-                                <application>
-                                    <name>UPS bypass</name>
-                                </application>
-                            </applications>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UPS bypass</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
+                            <uuid>43bd6f7365a2459e889eb2539423429b</uuid>
                             <name>UPS bypass voltage {#SNMPINDEX}</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>.1.3.6.1.2.1.33.1.5.3.1.2.{#SNMPINDEX}</snmp_oid>
                             <key>ups.bypass.voltage[{#SNMPINDEX}]</key>
                             <units>V</units>
-                            <applications>
-                                <application>
-                                    <name>UPS bypass</name>
-                                </application>
-                            </applications>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UPS bypass</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                     </item_prototypes>
                 </discovery_rule>
                 <discovery_rule>
+                    <uuid>1f8706cbb0e34c898df88b4f89d79341</uuid>
                     <name>Input line</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>discovery[{#UPSINPUTFREQUENCY},.1.3.6.1.2.1.33.1.3.3.1.2,{#UPSINPUTVOLTAGE},.1.3.6.1.2.1.33.1.3.3.1.3,{#UPSINPUTCURRENT},.1.3.6.1.2.1.33.1.3.3.1.4,{#UPSINPUTTRUEPOWER},.1.3.6.1.2.1.33.1.3.3.1.5]</snmp_oid>
@@ -416,72 +478,85 @@
                     <delay>1h</delay>
                     <item_prototypes>
                         <item_prototype>
+                            <uuid>5d4c3f59e2d946a6a6db8579aaa2a442</uuid>
                             <name>UPS input current {#SNMPINDEX}</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>.1.3.6.1.2.1.33.1.3.3.1.4.{#SNMPINDEX}</snmp_oid>
                             <key>ups.line.input.current[{#SNMPINDEX}]</key>
                             <value_type>FLOAT</value_type>
                             <units>A</units>
-                            <applications>
-                                <application>
-                                    <name>UPS input line</name>
-                                </application>
-                            </applications>
                             <preprocessing>
                                 <step>
                                     <type>MULTIPLIER</type>
-                                    <params>0.1</params>
+                                    <parameters>
+                                        <parameter>0.1</parameter>
+                                    </parameters>
                                 </step>
                             </preprocessing>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UPS input line</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
+                            <uuid>42a32a13c557405697175f57eb3b30fb</uuid>
                             <name>UPS input frequency {#SNMPINDEX}</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>.1.3.6.1.2.1.33.1.3.3.1.2.{#SNMPINDEX}</snmp_oid>
                             <key>ups.line.input.frequency[{#SNMPINDEX}]</key>
                             <value_type>FLOAT</value_type>
                             <units>Hz</units>
-                            <applications>
-                                <application>
-                                    <name>UPS input line</name>
-                                </application>
-                            </applications>
                             <preprocessing>
                                 <step>
                                     <type>MULTIPLIER</type>
-                                    <params>0.1</params>
+                                    <parameters>
+                                        <parameter>0.1</parameter>
+                                    </parameters>
                                 </step>
                             </preprocessing>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UPS input line</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
+                            <uuid>bb475f3057244e5b86622766110919c6</uuid>
                             <name>UPS input true power {#SNMPINDEX}</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>.1.3.6.1.2.1.33.1.3.3.1.4.{#SNMPINDEX}</snmp_oid>
                             <key>ups.line.input.truePower[{#SNMPINDEX}]</key>
                             <value_type>FLOAT</value_type>
                             <units>W</units>
-                            <applications>
-                                <application>
-                                    <name>UPS input line</name>
-                                </application>
-                            </applications>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UPS input line</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
+                            <uuid>22bb333b03754486a04025cab0d976b1</uuid>
                             <name>UPS input voltage {#SNMPINDEX}</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>.1.3.6.1.2.1.33.1.3.3.1.3.{#SNMPINDEX}</snmp_oid>
                             <key>ups.line.input.voltage[{#SNMPINDEX}]</key>
                             <value_type>FLOAT</value_type>
                             <units>V</units>
-                            <applications>
-                                <application>
-                                    <name>UPS input line</name>
-                                </application>
-                            </applications>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UPS input line</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                     </item_prototypes>
                 </discovery_rule>
                 <discovery_rule>
+                    <uuid>71d764b63fe74edab948b7abf3e225f8</uuid>
                     <name>Output line</name>
                     <type>SNMP_AGENT</type>
                     <snmp_oid>discovery[{#UPSOUTPUTVOLTAGE},.1.3.6.1.2.1.33.1.4.4.1.2,{#UPSOUTPUTCURRENT},.1.3.6.1.2.1.33.1.4.4.1.3,{#UPSOUTPUTPOWER},.1.3.6.1.2.1.33.1.4.4.1.4,{#UPSOUTPUTPERCENTLOAD},.1.3.6.1.2.1.33.1.4.4.1.5]</snmp_oid>
@@ -489,115 +564,131 @@
                     <delay>1h</delay>
                     <item_prototypes>
                         <item_prototype>
+                            <uuid>7b8e2d8ee6e44c7294fd9c0230288cb2</uuid>
                             <name>UPS output current {#SNMPINDEX}</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>.1.3.6.1.2.1.33.1.4.4.1.3.{#SNMPINDEX}</snmp_oid>
                             <key>ups.line.output.current[{#SNMPINDEX}]</key>
                             <value_type>FLOAT</value_type>
                             <units>A</units>
-                            <applications>
-                                <application>
-                                    <name>UPS output line</name>
-                                </application>
-                            </applications>
                             <preprocessing>
                                 <step>
                                     <type>MULTIPLIER</type>
-                                    <params>0.1</params>
+                                    <parameters>
+                                        <parameter>0.1</parameter>
+                                    </parameters>
                                 </step>
                             </preprocessing>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UPS output line</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
+                            <uuid>e83de66921e74d3095ab2cc0ef90c374</uuid>
                             <name>UPS output percent load {#SNMPINDEX}</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>.1.3.6.1.2.1.33.1.4.4.1.5.{#SNMPINDEX}</snmp_oid>
                             <key>ups.line.output.percentload[{#SNMPINDEX}]</key>
                             <units>%</units>
-                            <applications>
-                                <application>
-                                    <name>UPS output line</name>
-                                </application>
-                            </applications>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UPS output line</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
+                            <uuid>c1b91dc0408c455d81ba10a351cc2670</uuid>
                             <name>UPS output power {#SNMPINDEX}</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>.1.3.6.1.2.1.33.1.4.4.1.4.{#SNMPINDEX}</snmp_oid>
                             <key>ups.line.output.power[{#SNMPINDEX}]</key>
                             <units>W</units>
-                            <applications>
-                                <application>
-                                    <name>UPS output line</name>
-                                </application>
-                            </applications>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UPS output line</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                         <item_prototype>
+                            <uuid>95156615599248548b53d0d3927e2a86</uuid>
                             <name>UPS output voltage {#SNMPINDEX}</name>
                             <type>SNMP_AGENT</type>
                             <snmp_oid>.1.3.6.1.2.1.33.1.4.4.1.2.{#SNMPINDEX}</snmp_oid>
                             <key>ups.line.output.voltage[{#SNMPINDEX}]</key>
                             <units>V</units>
-                            <applications>
-                                <application>
-                                    <name>UPS output line</name>
-                                </application>
-                            </applications>
+                            <tags>
+                                <tag>
+                                    <tag>Application</tag>
+                                    <value>UPS output line</value>
+                                </tag>
+                            </tags>
                         </item_prototype>
                     </item_prototypes>
                 </discovery_rule>
             </discovery_rules>
+            <valuemaps>
+                <valuemap>
+                    <uuid>ae7c377c95b742768d64d66c21aaf1f2</uuid>
+                    <name>UPS RFC1628 battery status</name>
+                    <mappings>
+                        <mapping>
+                            <value>1</value>
+                            <newvalue>unknown</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>2</value>
+                            <newvalue>batteryNormal</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>3</value>
+                            <newvalue>batteryLow</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>4</value>
+                            <newvalue>batteryDepleted</newvalue>
+                        </mapping>
+                    </mappings>
+                </valuemap>
+                <valuemap>
+                    <uuid>5806a8352eda453a9b468098f4ab075c</uuid>
+                    <name>UPS RFC1628 output source</name>
+                    <mappings>
+                        <mapping>
+                            <value>1</value>
+                            <newvalue>other</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>2</value>
+                            <newvalue>none</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>3</value>
+                            <newvalue>normal</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>4</value>
+                            <newvalue>bypass</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>5</value>
+                            <newvalue>battery</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>6</value>
+                            <newvalue>booster</newvalue>
+                        </mapping>
+                        <mapping>
+                            <value>7</value>
+                            <newvalue>reducer</newvalue>
+                        </mapping>
+                    </mappings>
+                </valuemap>
+            </valuemaps>
         </template>
     </templates>
-    <value_maps>
-        <value_map>
-            <name>APC Battery Status</name>
-            <mappings>
-                <mapping>
-                    <value>1</value>
-                    <newvalue>unknown</newvalue>
-                </mapping>
-                <mapping>
-                    <value>2</value>
-                    <newvalue>batteryNormal</newvalue>
-                </mapping>
-                <mapping>
-                    <value>3</value>
-                    <newvalue>batteryLow</newvalue>
-                </mapping>
-            </mappings>
-        </value_map>
-        <value_map>
-            <name>UPS RFC1628 output source</name>
-            <mappings>
-                <mapping>
-                    <value>1</value>
-                    <newvalue>other</newvalue>
-                </mapping>
-                <mapping>
-                    <value>2</value>
-                    <newvalue>none</newvalue>
-                </mapping>
-                <mapping>
-                    <value>3</value>
-                    <newvalue>normal</newvalue>
-                </mapping>
-                <mapping>
-                    <value>4</value>
-                    <newvalue>bypass</newvalue>
-                </mapping>
-                <mapping>
-                    <value>5</value>
-                    <newvalue>battery</newvalue>
-                </mapping>
-                <mapping>
-                    <value>6</value>
-                    <newvalue>booster</newvalue>
-                </mapping>
-                <mapping>
-                    <value>7</value>
-                    <newvalue>reducer</newvalue>
-                </mapping>
-            </mappings>
-        </value_map>
-    </value_maps>
 </zabbix_export>
