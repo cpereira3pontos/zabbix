@@ -7,7 +7,7 @@ Para que consigar fazer o monitoramento em varios estados o seu certificado A1 t
 Para fazer a converter o arquivos.
 	openssl pkcs12 -in certificado.pfx -clcerts -nokeys -out certificado.pem
 	openssl pkcs12 -in certificado.pfx -nodes -out certificado.key
-Certificado tem que esatar no Zabbix como .key e .pem. e colocar permissão "chmod"
+Certificado tem que estar no Zabbix como .key e .pem. e colocar permissão "chmod"
 #
 O certificado tem que ficar no diretorio /usr/share/zabbix/ssl/keys
 					 /etc/ssl/certs
