@@ -1,28 +1,73 @@
-Estou usando hoje em Minas Gerais. Não o teste em outro estado.
-#
-Para fazer o monitoramento vai precisar do certificado digital A1 da sua empresa para consegui pegar as metricas dos dados.
-#
-Para que consigar fazer o monitoramento em varios estados o seu certificado A1 ter permissão de emissão de nota fiscal no estado que esta tendo ter monitoramento.
-#
-Para fazer a converter o arquivos.
-	openssl pkcs12 -in certificado.pfx -clcerts -nokeys -out certificado.pem
-	openssl pkcs12 -in certificado.pfx -nodes -out certificado.key
-Certificado tem que estar no Zabbix como .key e .pem. e colocar permissão "chmod"
-#
-O certificado tem que ficar no diretorio /usr/share/zabbix/ssl/keys
-					 /etc/ssl/certs
-#
-Colocar o caminho do que esta o certificado no zabbix-server.conf
-------#SSLCertLocation=/etc/ssl/certs/
-Depois de colocar este caminho acima no zabbix-server.conf
-Start- zabbix-server
-##
-Vamos abrir o Zabbix e configruas!
-Menu -> Configuraçẽos -> Hosts -> Web Check -> Sefaz "na coluna WEB" -> MG -> Autenticação - Colocar o nome do seu certificao .pem e .key e Senha dele "Selecionar o campo Verificação de SSL do host"
+Documentação de Monitoramento via Zabbix com Certificado Digital A1
+Ambiente de Teste
 
+    Estado atual de uso: Minas Gerais (MG)
 
-            **Consumidor final MG**
-Sobre o monitoramento Consumidor final esta configurando somente MG.
-Pegando as configurações da Nfe funciona certinho o consumidor final.
-#
+    Importante: Esta configuração foi testada apenas em MG. Para utilizar em outros estados, verifique os requisitos específicos conforme indicado abaixo.
 
+Requisitos
+
+    Certificado Digital A1
+
+        Necessário para capturar as métricas dos dados da SEFAZ.
+
+        Para monitoramento em vários estados, o certificado deve possuir permissão de emissão de nota fiscal no estado desejado.
+
+Conversão do Certificado
+
+Para utilizar o certificado no Zabbix, será necessário convertê-lo para os formatos .pem e .key:
+
+openssl pkcs12 -in certificado.pfx -clcerts -nokeys -out certificado.pem
+openssl pkcs12 -in certificado.pfx -nodes -out certificado.key
+
+    Observações:
+
+        Os arquivos .pem e .key devem ser adicionados ao Zabbix.
+
+        Aplique permissões adequadas usando chmod para garantir a segurança dos arquivos.
+
+Diretórios de Armazenamento
+
+Coloque os arquivos do certificado nos seguintes diretórios:
+
+    /usr/share/zabbix/ssl/keys
+
+    /etc/ssl/certs
+
+Configuração no Zabbix Server
+
+Edite o arquivo de configuração zabbix_server.conf e adicione o caminho para os certificados:
+
+#SSLCertLocation=/etc/ssl/certs/
+
+Depois disso, reinicie o serviço do Zabbix Server:
+
+systemctl restart zabbix-server
+
+Configuração no Zabbix (Interface Web)
+
+    Acesse o Zabbix.
+
+    Vá até: Configuração → Hosts
+
+    Localize o host SEFAZ correspondente (ex: MG).
+
+    Na aba Web, clique em Web Check.
+
+    Selecione o host MG → clique na coluna Web.
+
+    Vá em Autenticação e configure:
+
+        Nome do certificado .pem
+
+        Nome do arquivo .key
+
+        Senha do certificado
+
+        Marque a opção Verificação de SSL do host
+
+Monitoramento de Consumidor Final – MG
+
+    O monitoramento do consumidor final está configurado exclusivamente para MG.
+
+    Utilizando as mesmas configurações da NF-e, o monitoramento do consumidor final funciona corretamente.
