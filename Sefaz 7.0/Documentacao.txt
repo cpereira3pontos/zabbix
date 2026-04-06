@@ -31,7 +31,7 @@ Diretórios de Armazenamento
 Coloque os arquivos do certificado nos seguintes diretórios:
 
     /usr/share/zabbix/ssl/keys
-
+    /usr/share/zabbix/ssl/certs
     /etc/ssl/certs
 
 Configuração no Zabbix Server
