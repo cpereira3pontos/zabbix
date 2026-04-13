@@ -1,0 +1,476 @@
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: 957bd9f40c564f9dbff348e1db6cf21d
+      name: Nobreaks
+  templates:
+    - uuid: f19d5d2e5e42453d808d2683706c9320
+      template: 'UPS RFC 1628 SNMP'
+      name: 'UPS RFC 1628 SNMP'
+      templates:
+        - name: 'Template Module Generic SNMP'
+      groups:
+        - name: Nobreaks
+      items:
+        - uuid: 1a762219afaa4e9eb47ce2faba43d5b1
+          name: 'Input line Test'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.3.3.1.3
+          key: entrada
+        - uuid: 27958e931d764f17817b611f50eb2e1f
+          name: 'Corrente da bateria do UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.2.6.0
+          key: ups.battery.current
+          history: 90d
+          value_type: FLOAT
+          units: A
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: 'UPS battery'
+        - uuid: 906ebe5a40cc4658a023d068915d8a4e
+          name: 'Carga estimada restante da UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.2.4.0
+          key: ups.battery.estimatedChargeRemaining
+          history: 90d
+          units: '%'
+          tags:
+            - tag: Application
+              value: 'UPS battery'
+          triggers:
+            - uuid: b64694d485ae459c9296c76f430b4463
+              expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)<=15'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)>=15'
+              name: 'Status Bateria 15%'
+              priority: DISASTER
+            - uuid: 3027c4b38e0f4eb9885535de0e82c6ca
+              expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)<=20'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)>=20'
+              name: 'Status Bateria 20%'
+              priority: HIGH
+            - uuid: d674f2bc3fd54c0b851d6875962be8bf
+              expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)<=30'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)>=30'
+              name: 'Status Bateria 30%'
+              priority: AVERAGE
+            - uuid: 9fcd1e9cb3264af29e90763abed149a6
+              expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)<=40'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)>=40'
+              name: 'Status Bateria 40%'
+              priority: WARNING
+            - uuid: e97739c8b210416a8d6f65b9c2425fdf
+              expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)<=50'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)>=50'
+              name: 'Status Bateria 50%'
+              priority: WARNING
+            - uuid: e2c49ef9d19440eea4822c5d463fdfcd
+              expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)<=70'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)>=70'
+              name: 'Status Bateria 70%'
+              priority: WARNING
+            - uuid: e5b468eee5e843b99d904ffdfa27cee4
+              expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)<=80'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)>=80'
+              name: 'Status Bateria 80%'
+              priority: WARNING
+            - uuid: 22613c593c3d4d678e35668f0967e8be
+              expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)<=90'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'avg(/UPS RFC 1628 SNMP/ups.battery.estimatedChargeRemaining,60s)>=90'
+              name: 'Status Bateria 90%'
+              priority: WARNING
+        - uuid: 7bace19e24984dfbae4c3efc7028e2cf
+          name: 'Status da bateria do no-break'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.2.1.0
+          key: ups.battery.status
+          history: 90d
+          valuemap:
+            name: 'UPS RFC1628 battery status'
+          tags:
+            - tag: Application
+              value: 'UPS battery'
+          triggers:
+            - uuid: 9b5731cd7cb947cabfd3f629431e826d
+              expression: 'last(/UPS RFC 1628 SNMP/ups.battery.status)=4'
+              name: 'UPS battery status is depleted'
+              priority: WARNING
+            - uuid: 0945afe422834ddab9e7154b1ff564fa
+              expression: 'last(/UPS RFC 1628 SNMP/ups.battery.status)=3'
+              name: 'UPS battery status is low'
+              priority: WARNING
+            - uuid: a6f94f08e1a64389a80965854e26d10e
+              expression: 'last(/UPS RFC 1628 SNMP/ups.battery.status)=1'
+              name: 'UPS battery status is unknown'
+              priority: WARNING
+        - uuid: 197919de33c04a32b24c6931784d31ba
+          name: 'Temperatura da bateria do UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.2.7.0
+          key: ups.battery.temperature
+          history: 90d
+          status: DISABLED
+          units: °C
+          tags:
+            - tag: Application
+              value: 'UPS battery'
+        - uuid: 7622005749f740e88b83a7956c103317
+          name: 'Tensão da bateria do UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.2.5.0
+          key: ups.battery.voltage
+          history: 90d
+          value_type: FLOAT
+          units: V
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: 'UPS battery'
+          triggers:
+            - uuid: 22b67eaf3cdf4d7880817b0c293d835c
+              expression: 'abs(last(/UPS RFC 1628 SNMP/ups.battery.voltage))<=1.1'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'abs(last(/UPS RFC 1628 SNMP/ups.battery.voltage))>=1.3'
+              name: 'Voltagem Bateria'
+              priority: WARNING
+        - uuid: 59f8e0751d3143ebad9aea19feec6e83
+          name: 'Frequência de desvio do UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.5.1.0
+          key: ups.bypass.frequency
+          history: 90d
+          units: Hz
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: 'UPS bypass'
+          triggers:
+            - uuid: db5dd7815c384dc9aec6b33550b276d9
+              expression: 'abs(last(/UPS RFC 1628 SNMP/ups.bypass.frequency))<47'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'abs(last(/UPS RFC 1628 SNMP/ups.bypass.frequency))>47'
+              name: 'Sem Energia'
+              priority: DISASTER
+        - uuid: 2244fdf6ba6a4beda3601ee6c7aae4a5
+          name: 'Versão do software do agente UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.1.4.0
+          key: ups.ident.agentSoftwareVersion
+          delay: 1d
+          history: 90d
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: 'UPS inventory'
+        - uuid: 9cde2d9fc2b349489ac56d88ec4802c8
+          name: 'Dispositivos conectados ao UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.1.6.0
+          key: ups.ident.attachedDevices
+          delay: 1d
+          history: 90d
+          value_type: TEXT
+          trends: '0'
+          tags:
+            - tag: Application
+              value: 'UPS inventory'
+        - uuid: 1b9c078e174744aeacd830dc4833d477
+          name: 'Fabricante de UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.1.1.0
+          key: ups.ident.manufacturer
+          delay: 1d
+          history: 90d
+          value_type: TEXT
+          trends: '0'
+          inventory_link: VENDOR
+          tags:
+            - tag: Application
+              value: 'UPS inventory'
+        - uuid: 2391ac6eb4eb48abb718d9cd4a45c531
+          name: 'Nome do modelo UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.1.2.0
+          key: ups.ident.model
+          delay: 1d
+          history: 90d
+          value_type: TEXT
+          trends: '0'
+          inventory_link: MODEL
+          tags:
+            - tag: Application
+              value: 'UPS inventory'
+        - uuid: 6270d6eb55334915a6322380faf659da
+          name: 'Nome do UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.1.5.0
+          key: ups.ident.name
+          delay: 1d
+          history: 90d
+          value_type: TEXT
+          trends: '0'
+          inventory_link: HARDWARE
+          tags:
+            - tag: Application
+              value: 'UPS inventory'
+        - uuid: 670f662a20544336866a0da1cda215db
+          name: 'Linha de entrada UPS defeituosa'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.3.1.0
+          key: ups.line.input.Bads
+          history: 90d
+          tags:
+            - tag: Application
+              value: 'UPS input line'
+        - uuid: 57acf98d46634185ab5b86b850f3ae71
+          name: 'Frequência de saída do UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.4.2.0
+          key: ups.line.output.frequency
+          history: 90d
+          preprocessing:
+            - type: MULTIPLIER
+              parameters:
+                - '0.1'
+          tags:
+            - tag: Application
+              value: 'UPS output line'
+        - uuid: 8f57a234a1c4497781caf5635f0bab41
+          name: 'Fonte de saída UPS'
+          type: SNMP_AGENT
+          snmp_oid: .1.3.6.1.2.1.33.1.4.1.0
+          key: ups.line.output.source
+          history: 90d
+          valuemap:
+            name: 'UPS RFC1628 output source'
+          tags:
+            - tag: Application
+              value: 'UPS output line'
+          triggers:
+            - uuid: 09429fbf291a4c759e49d708bded7223
+              expression: 'last(/UPS RFC 1628 SNMP/ups.line.output.source)=6'
+              name: 'UPS output source is booster'
+              priority: WARNING
+            - uuid: 3bf271d27c5a4e4a9a305fb5b508c15a
+              expression: 'last(/UPS RFC 1628 SNMP/ups.line.output.source)=4'
+              name: 'UPS output source is bypass'
+              priority: WARNING
+            - uuid: eb1fd29aa38d4961a994abc1926e306a
+              expression: 'last(/UPS RFC 1628 SNMP/ups.line.output.source)=2'
+              name: 'UPS output source is none'
+              priority: WARNING
+            - uuid: 94c5198bf9914c97a18353b53ab3f3e0
+              expression: 'last(/UPS RFC 1628 SNMP/ups.line.output.source)=1'
+              name: 'UPS output source is other'
+              priority: WARNING
+            - uuid: 0167ae17bb98474686d3abc3708ed796
+              expression: 'last(/UPS RFC 1628 SNMP/ups.line.output.source)=7'
+              name: 'UPS output source is reducer'
+              priority: WARNING
+      discovery_rules:
+        - uuid: 7d8d53e198e845e3b8d341d9388de5f4
+          name: Ignorar
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#UPSBYPASSVOLTAGE},.1.3.6.1.2.1.33.1.5.3.1.2,{#UPSBYPASSCURRENT},.1.3.6.1.2.1.33.1.5.3.1.3,{#UPSBYPASSPOWER},.1.3.6.1.2.1.33.1.5.3.1.4]'
+          key: ups.bypass
+          delay: 1h
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          item_prototypes:
+            - uuid: f4c3a05cc6a9408e926e216d3bf014fb
+              name: 'Corrente de desvio do UPS'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.2.1.33.1.5.3.1.3.{#SNMPINDEX}'
+              key: 'ups.bypass.current[{#SNMPINDEX}]'
+              history: 90d
+              units: A
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: 'Desvio do no-break'
+            - uuid: 8e15b96c8ec24061861e686b7404c060
+              name: 'Alimentação de desvio do UPS'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.2.1.33.1.5.3.1.4.{#SNMPINDEX}'
+              key: 'ups.bypass.power[{#SNMPINDEX}]'
+              history: 90d
+              units: W
+              tags:
+                - tag: Application
+                  value: 'UPS bypass'
+            - uuid: 43bd6f7365a2459e889eb2539423429b
+              name: 'Tensão de desvio do UPS'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.2.1.33.1.5.3.1.2.{#SNMPINDEX}'
+              key: 'ups.bypass.voltage[{#SNMPINDEX}]'
+              history: 90d
+              units: V
+              tags:
+                - tag: Application
+                  value: 'Desvio do no-break'
+        - uuid: 1f8706cbb0e34c898df88b4f89d79341
+          name: 'Linha de entrada'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#UPSINPUTFREQUENCY},.1.3.6.1.2.1.33.1.3.3.1.2,{#UPSINPUTVOLTAGE},.1.3.6.1.2.1.33.1.3.3.1.3,{#UPSINPUTCURRENT},.1.3.6.1.2.1.33.1.3.3.1.4,{#UPSINPUTTRUEPOWER},.1.3.6.1.2.1.33.1.3.3.1.5]'
+          key: ups.line.input
+          delay: 1h
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          item_prototypes:
+            - uuid: 42a32a13c557405697175f57eb3b30fb
+              name: 'Frequência de entrada do UPS'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.2.1.33.1.3.3.1.2.{#SNMPINDEX}'
+              key: 'frequencia.entrada.linha.UPS[{#SNMPINDEX}]'
+              history: 90d
+              value_type: FLOAT
+              units: Hz
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: 'Linha de entrada UPS'
+            - uuid: 5d4c3f59e2d946a6a6db8579aaa2a442
+              name: 'Corrente de entrada do UPS'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.2.1.33.1.3.3.1.4.{#SNMPINDEX}'
+              key: 'ups.line.input.current[{#SNMPINDEX}]'
+              history: 90d
+              value_type: FLOAT
+              units: A
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: 'Linha de entrada UPS'
+            - uuid: bb475f3057244e5b86622766110919c6
+              name: 'Potência real de entrada UPS'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.2.1.33.1.3.3.1.4.{#SNMPINDEX}'
+              key: 'ups.line.input.truePower[{#SNMPINDEX}]'
+              history: 90d
+              value_type: FLOAT
+              units: W
+              tags:
+                - tag: Application
+                  value: 'Linha de entrada UPS'
+            - uuid: 22bb333b03754486a04025cab0d976b1
+              name: 'Tensão de entrada do UPS'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.2.1.33.1.3.3.1.3.{#SNMPINDEX}'
+              key: 'ups.line.input.voltage[{#SNMPINDEX}]'
+              history: 90d
+              value_type: FLOAT
+              units: V
+              tags:
+                - tag: Application
+                  value: 'Linha de entrada UPS'
+        - uuid: 71d764b63fe74edab948b7abf3e225f8
+          name: 'Linha de saída'
+          type: SNMP_AGENT
+          snmp_oid: 'discovery[{#UPSOUTPUTVOLTAGE},.1.3.6.1.2.1.33.1.4.4.1.2,{#UPSOUTPUTCURRENT},.1.3.6.1.2.1.33.1.4.4.1.3,{#UPSOUTPUTPOWER},.1.3.6.1.2.1.33.1.4.4.1.4,{#UPSOUTPUTPERCENTLOAD},.1.3.6.1.2.1.33.1.4.4.1.5]'
+          key: ups.line.output
+          delay: 1h
+          lifetime: 30d
+          enabled_lifetime_type: DISABLE_NEVER
+          item_prototypes:
+            - uuid: 7b8e2d8ee6e44c7294fd9c0230288cb2
+              name: 'Corrente de saída do UPS'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.2.1.33.1.4.4.1.3.{#SNMPINDEX}'
+              key: 'corrente.saida.linha.UPS[{#SNMPINDEX}]'
+              history: 90d
+              value_type: FLOAT
+              units: A
+              preprocessing:
+                - type: MULTIPLIER
+                  parameters:
+                    - '0.1'
+              tags:
+                - tag: Application
+                  value: 'Linha de saída UPS'
+            - uuid: e83de66921e74d3095ab2cc0ef90c374
+              name: 'Carga percentual de saída do UPS'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.2.1.33.1.4.4.1.5.{#SNMPINDEX}'
+              key: 'porcentagem.carga.saida.linha.UPS[{#SNMPINDEX}]'
+              history: 90d
+              units: '%'
+              tags:
+                - tag: Application
+                  value: 'Linha de saída UPS'
+            - uuid: c1b91dc0408c455d81ba10a351cc2670
+              name: 'Potência de saída do UPS'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.2.1.33.1.4.4.1.4.{#SNMPINDEX}'
+              key: 'potencia.saida.linha.ups[{#SNMPINDEX}]'
+              history: 90d
+              units: W
+              tags:
+                - tag: Application
+                  value: 'Linha de saída UPS'
+            - uuid: 95156615599248548b53d0d3927e2a86
+              name: 'Tensão de saída do UPS'
+              type: SNMP_AGENT
+              snmp_oid: '.1.3.6.1.2.1.33.1.4.4.1.2.{#SNMPINDEX}'
+              key: 'tensao.saida.linha.ups[{#SNMPINDEX}]'
+              history: 90d
+              units: V
+              tags:
+                - tag: Application
+                  value: 'Linha de saída UPS'
+      valuemaps:
+        - uuid: ae7c377c95b742768d64d66c21aaf1f2
+          name: 'UPS RFC1628 battery status'
+          mappings:
+            - value: '1'
+              newvalue: unknown
+            - value: '2'
+              newvalue: batteryNormal
+            - value: '3'
+              newvalue: batteryLow
+            - value: '4'
+              newvalue: batteryDepleted
+        - uuid: 5806a8352eda453a9b468098f4ab075c
+          name: 'UPS RFC1628 output source'
+          mappings:
+            - value: '1'
+              newvalue: other
+            - value: '2'
+              newvalue: none
+            - value: '3'
+              newvalue: normal
+            - value: '4'
+              newvalue: bypass
+            - value: '5'
+              newvalue: battery
+            - value: '6'
+              newvalue: booster
+            - value: '7'
+              newvalue: reducer
