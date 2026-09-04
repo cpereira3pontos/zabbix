@@ -26,8 +26,8 @@
                 <httptest>
                     <name>AM</name>
                     <status>DISABLED</status>
-                    <ssl_cert_file>quirius.pem</ssl_cert_file>
-                    <ssl_key_file>quirius.key</ssl_key_file>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -70,8 +70,8 @@
                 <httptest>
                     <name>BA</name>
                     <status>DISABLED</status>
-                    <ssl_cert_file>quirius.pem</ssl_cert_file>
-                    <ssl_key_file>quirius.key</ssl_key_file>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -119,8 +119,8 @@
                 <httptest>
                     <name>CE</name>
                     <status>DISABLED</status>
-                    <ssl_cert_file>quirius.pem</ssl_cert_file>
-                    <ssl_key_file>quirius.key</ssl_key_file>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -168,8 +168,8 @@
                 <httptest>
                     <name>GO</name>
                     <status>DISABLED</status>
-                    <ssl_cert_file>quirius.pem</ssl_cert_file>
-                    <ssl_key_file>quirius.key</ssl_key_file>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -218,9 +218,9 @@
                     <name>MG</name>
                     <authentication>BASIC</authentication>
                     <verify_host>YES</verify_host>
-                    <ssl_cert_file>ssl-cert.pem</ssl_cert_file>
-                    <ssl_key_file>ssl-cert.key</ssl_key_file>
-                    <ssl_key_password>Coop505%</ssl_key_password>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
+                    <ssl_key_password>{$SEFAZ_SSL_KEY_PASSWORD}</ssl_key_password>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -263,8 +263,8 @@
                 <httptest>
                     <name>MS</name>
                     <status>DISABLED</status>
-                    <ssl_cert_file>quirius.pem</ssl_cert_file>
-                    <ssl_key_file>quirius.key</ssl_key_file>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -314,9 +314,9 @@
                     <status>DISABLED</status>
                     <authentication>BASIC</authentication>
                     <verify_host>YES</verify_host>
-                    <ssl_cert_file>ssl-cert.pem</ssl_cert_file>
-                    <ssl_key_file>ssl-cert.key</ssl_key_file>
-                    <ssl_key_password>Coop505%</ssl_key_password>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
+                    <ssl_key_password>{$SEFAZ_SSL_KEY_PASSWORD}</ssl_key_password>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -357,8 +357,8 @@
                 <httptest>
                     <name>PE</name>
                     <status>DISABLED</status>
-                    <ssl_cert_file>quirius.pem</ssl_cert_file>
-                    <ssl_key_file>quirius.key</ssl_key_file>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -401,8 +401,8 @@
                 <httptest>
                     <name>PR</name>
                     <status>DISABLED</status>
-                    <ssl_cert_file>quirius.pem</ssl_cert_file>
-                    <ssl_key_file>quirius.key</ssl_key_file>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -450,8 +450,8 @@
                 <httptest>
                     <name>RS</name>
                     <status>DISABLED</status>
-                    <ssl_cert_file>quirius.pem</ssl_cert_file>
-                    <ssl_key_file>quirius.key</ssl_key_file>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -500,9 +500,9 @@
                     <name>SP</name>
                     <status>DISABLED</status>
                     <authentication>BASIC</authentication>
-                    <ssl_cert_file>Coopercam.pem</ssl_cert_file>
-                    <ssl_key_file>coopercam.key</ssl_key_file>
-                    <ssl_key_password>COOPA1BCK</ssl_key_password>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
+                    <ssl_key_password>{$SEFAZ_SSL_KEY_PASSWORD}</ssl_key_password>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -550,8 +550,8 @@
                 <httptest>
                     <name>SVAN</name>
                     <status>DISABLED</status>
-                    <ssl_cert_file>quirius.pem</ssl_cert_file>
-                    <ssl_key_file>quirius.key</ssl_key_file>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -594,8 +594,8 @@
                 <httptest>
                     <name>SVC-AN</name>
                     <status>DISABLED</status>
-                    <ssl_cert_file>quirius.pem</ssl_cert_file>
-                    <ssl_key_file>quirius.key</ssl_key_file>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>
@@ -633,8 +633,8 @@
                 <httptest>
                     <name>SVRS</name>
                     <status>DISABLED</status>
-                    <ssl_cert_file>quirius.pem</ssl_cert_file>
-                    <ssl_key_file>quirius.key</ssl_key_file>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
                     <steps>
                         <step>
                             <name>NfeStatusServico</name>

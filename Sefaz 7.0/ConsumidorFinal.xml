@@ -25,9 +25,9 @@
                 <httptest>
                     <name>Consumidor Final</name>
                     <authentication>BASIC</authentication>
-                    <ssl_cert_file>Certificado A1 VAl 01022023.pem</ssl_cert_file>
-                    <ssl_key_file>Certificado A1 VAl 01022023.key</ssl_key_file>
-                    <ssl_key_password>COOP505@</ssl_key_password>
+                    <ssl_cert_file>{$SEFAZ_SSL_CERT_FILE}</ssl_cert_file>
+                    <ssl_key_file>{$SEFAZ_SSL_KEY_FILE}</ssl_key_file>
+                    <ssl_key_password>{$SEFAZ_SSL_KEY_PASSWORD}</ssl_key_password>
                     <steps>
                         <step>
                             <name>Recepção Evento</name>

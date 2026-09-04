@@ -52,17 +52,23 @@ Configuração no Zabbix (Interface Web)
 
     Localize o host SEFAZ correspondente (ex: MG).
 
+    Na aba Macros, cadastre as macros abaixo com os valores do seu ambiente:
+
+        {$SEFAZ_SSL_CERT_FILE}: nome do arquivo .pem
+
+        {$SEFAZ_SSL_KEY_FILE}: nome do arquivo .key
+
+        {$SEFAZ_SSL_KEY_PASSWORD}: senha do certificado (marque como secreta)
+
+    Os templates não incluem certificados, usuários ou senhas. Não registre esses dados no repositório.
+
     Na aba Web, clique em Web Check.
 
     Selecione o host MG → clique na coluna Web.
 
     Vá em Autenticação e configure:
 
-        Nome do certificado .pem
-
-        Nome do arquivo .key
-
-        Senha do certificado
+        Confirme que as macros de certificado foram configuradas
 
         Marque a opção Verificação de SSL do host
 
